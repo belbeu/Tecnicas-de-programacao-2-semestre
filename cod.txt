@@ -1,0 +1,83 @@
+main:
+
+package bancoaula1;
+import javax.swing.JOptionPane;
+/**
+ *
+ * @author FATEC ZONA LESTE
+ */
+public class BancoAula1 {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        Conta c = new Conta();
+        Conta destino = new Conta();
+        c.numeroConta = 1;
+        c.titular = JOptionPane.showInputDialog("Digite o nome do titular da conta: ");
+        String dados = "\n Conta número: "+c.numeroConta+"\n  Titular: "+c.titular+"\n Saldo R$: "+ c.saldo;
+        double v = 0;
+            JOptionPane.showMessageDialog(null, dados);
+        v = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor do depósito"));
+        c.depositar(v);
+        
+        JOptionPane.showMessageDialog(null,"Saldo atualizado: "+c.saldo);
+        
+        String entrada = JOptionPane.showInputDialog("Quanto você deseja sacar? ");
+        
+        double valor = Double.parseDouble(entrada);
+        
+        if (c.sacar(valor)) {
+        JOptionPane.showMessageDialog(null,"Operação realizada com sucesso!");
+        JOptionPane.showMessageDialog(null,"Saldo após sacar: "+c.saldo);
+        }else {
+        JOptionPane.showMessageDialog(null,"Operação não realizada!");
+        }
+        
+        String transferencia = JOptionPane.showInputDialog("Quanto você deseja transferir? ");
+        
+        double valorTransferencia = Double.parseDouble(transferencia);
+        
+        if (c.transferir(valorTransferencia, destino)) {
+        JOptionPane.showMessageDialog(null,"Operação realizada com sucesso!");
+        JOptionPane.showMessageDialog(null,"Saldo após transferir: "+c.saldo);
+        JOptionPane.showMessageDialog(null, "Saldo destino: " + destino.saldo);
+        }else {
+        JOptionPane.showMessageDialog(null,"Operação não realizada!");
+        }
+    }
+    
+}
+
+conta:
+
+public class Conta {
+    //atributos
+    public int numeroConta;
+    public String titular;
+    public double saldo=0;
+    //métodos
+    public void depositar(double valor) {
+    this.saldo += valor; // saldo recebe saldo + valor
+    }
+    
+    public boolean sacar(double valor) {
+        if(this.saldo >= valor) {
+        this.saldo -= valor;
+        return true;
+    }else{
+         return false;   
+        }
+    }
+    
+    public boolean transferir (double valor, Conta c) {
+    if(this.saldo >= valor) {
+        this.sacar(valor);
+        c.depositar(valor);
+        return true;
+    }else {
+    return false;
+        }
+    }
+}
